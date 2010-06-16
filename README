@@ -1,0 +1,25 @@
+RDFObjects ChangeSets
+
+    Provide a way to more easily work with RDF ChangeSets (http://n2.talis.com/wiki/Changesets) in RDFObjects.
+    
+    Example:
+    
+    >> require 'rdf_objects/changeset'
+    >> resource = RDFObject::Resource.new('http://example.org/1')
+    >> resource.assert("[foaf:name]", "Ross Singer")
+    >> resource.relate("[foaf:homepage]", "http://dilettantes.code4lib.org/")
+    >> changeset = RDFObject::Resource.new(resource)
+    >> changeset.delete_all
+    >> changeset.to_xml
+    => "<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cs="http://purl.org/vocab/changeset/schema#"><rdf:Description rdf:nodeID="b4b928b0-5b8a-012d-d2b5-001b63a48175"><cs:subjectOfChange rdf:resource="http://example.org/1" /><cs:createdDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2010-06-16T11:35:24-04:00</cs:createdDate><cs:removal><rdf:Description rdf:nodeID="b7c740d0-5b8a-012d-d2b5-001b63a48175"><rdf:predicate rdf:resource="http://xmlns.com/foaf/0.1/name" /><rdf:subject rdf:resource="http://example.org/1" /><rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement" /><rdf:object>Ross Singer</rdf:object></rdf:Description></cs:removal><cs:removal><rdf:Description rdf:nodeID="b7d8d920-5b8a-012d-d2b5-001b63a48175"><rdf:predicate rdf:resource="http://xmlns.com/foaf/0.1/homepage" /><rdf:subject rdf:resource="http://example.org/1" /><rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement" /><rdf:object rdf:resource="http://dilettantes.code4lib.org/" /></rdf:Description></cs:removal><rdf:type rdf:resource="http://purl.org/vocab/changeset/schema#ChangeSet" /></rdf:Description></rdf:RDF>"
+    
+    
+    >> changeset = RDFObject::ChangeSet.new(resource)
+    >> changeset.remove_statement("[foaf:homepage]", resource.foaf['homepage]'])
+    >> changeset.add_statement("[foaf:homepage]", RDFObject::Resource.new('http://dilettantes.code4lib.org/blog/'))
+    >> changeset.to_xml
+    => "<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cs="http://purl.org/vocab/changeset/schema#"><rdf:Description rdf:nodeID="d6efad10-5b8c-012d-d2b5-001b63a48175"><cs:subjectOfChange rdf:resource="http://example.org/1" /><cs:createdDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2010-06-16T11:50:41-04:00</cs:createdDate><cs:removal><rdf:Description rdf:nodeID="d7fe6d70-5b8c-012d-d2b5-001b63a48175"><rdf:predicate rdf:resource="http://xmlns.com/foaf/0.1/homepage" /><rdf:subject rdf:resource="http://example.org/1" /><rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement" /><rdf:object rdf:resource="http://dilettantes.code4lib.org/" /></rdf:Description></cs:removal><cs:addition><rdf:Description rdf:nodeID="077e1400-5b8d-012d-d2b5-001b63a48175"><rdf:predicate rdf:resource="http://xmlns.com/foaf/0.1/homepage" /><rdf:subject rdf:resource="http://example.org/1" /><rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement" /><rdf:object rdf:resource="http://dilettantes.code4lib.org/blog/" /></rdf:Description></cs:addition><rdf:type rdf:resource="http://purl.org/vocab/changeset/schema#ChangeSet" /></rdf:Description></rdf:RDF>"
+    
+    Currently RDFObjects ChangeSets only uses blank nodes.
+
+    
